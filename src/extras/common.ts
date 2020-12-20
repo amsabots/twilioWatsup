@@ -1,0 +1,66 @@
+import twilio from "twilio";
+import { MessageInstance } from "twilio/lib/rest/api/v2010/account/message";
+import config from "../config/config";
+import { twilioRouter } from "../routes";
+
+export interface RedisStorage {
+  sessionId: string;
+  nextUrlCallId: string;
+  previousUrlCall: string;
+}
+
+export interface IDiscoveryResponse {
+  sessionId: string | null;
+  message: string | null;
+  statusCode: number | null;
+  msisdn: string | null;
+  errorMessage: string | null;
+  nextStepId: string | null;
+  previousUrlCall: string | null;
+}
+
+// const init
+const { accountSid, accountToken } = config.twilio;
+const client = twilio(accountSid, accountToken);
+
+export default class CommonUtils {
+  message: string;
+  senderPhoneNumber: string;
+
+  logger = (message: string | {}, file = "index", type = "info"): void => {
+    console.log(
+      `\x1b[35m[TwilioDiscovery::${type.toUpperCase()}]\x1b[0m > \x1b[2m${this.getTime()}\x1b[0m [${file}.ts] ***\x1b[32m ${message}\x1b[0m ***`
+    );
+  };
+
+  private getTime = (): string => {
+    let today: string;
+    const date = new Date();
+    today = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    return today;
+  };
+
+  private convertToTwilioNumber = (number: string): string => {
+    let twilioNumber: string = "";
+    twilioNumber = `whatsapp:+${number}`;
+    return twilioNumber;
+  };
+
+  getPhoneNumber = (): string => {
+    const toBrokeToArray: string[] = this.senderPhoneNumber.split(":");
+    return toBrokeToArray[1].replace("+", "");
+  };
+
+  sendTwilioWhatsappMessage = (): Promise<MessageInstance> => {
+    try {
+      const message = client.messages.create({
+        to: this.senderPhoneNumber,
+        from: this.convertToTwilioNumber(<string>process.env.TWILIO_NUMBER),
+        body: this.message,
+      });
+      return message;
+    } catch (error) {
+      throw error;
+    }
+  };
+}
