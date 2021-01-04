@@ -36,6 +36,12 @@ router.post("/api/twilio/", async (req, res) => {
       subCategory,
       addToCart,
       proceedToCheckout,
+      payment,
+      profileMain,
+      profileRequestName,
+      profileName,
+      requestNumber,
+      liveLocation,
     } = config.urls;
     const {
       categoryId,
@@ -45,6 +51,12 @@ router.post("/api/twilio/", async (req, res) => {
       AllItemsId,
       addToCartId,
       proceedToCheckoutId,
+      paymentId,
+      profileMainId,
+      requestNameId,
+      profileNameId,
+      requestNumberId,
+      liveLocationId,
     } = config.urlsIds;
     let params: Params = {
         action: Body.toLowerCase(),
@@ -94,6 +106,25 @@ router.post("/api/twilio/", async (req, res) => {
             case proceedToCheckoutId:
               requestUrl = requestUrl.concat(proceedToCheckout);
               break;
+            case paymentId:
+              requestUrl = requestUrl.concat(payment);
+              break;
+            case profileMainId:
+              requestUrl = requestUrl.concat(profileMain);
+              break;
+            case requestNameId:
+              requestUrl = requestUrl.concat(profileRequestName);
+              break;
+            case profileNameId:
+              requestUrl = requestUrl.concat(profileName);
+              break;
+            case requestNumberId:
+              requestUrl = requestUrl.concat(requestNumber);
+              break;
+            case liveLocationId:
+              params.action = req.body;
+              requestUrl = requestUrl.concat(liveLocation);
+              break;
           }
           break;
       }
@@ -108,20 +139,26 @@ router.post("/api/twilio/", async (req, res) => {
       if (data.statusCode === 200 || data.statusCode === 500) {
         utils.message = data.message;
       } else {
-        console.log(data);
-        utils.message = `*Invalid input response*, Please try again and make sure you submit the correct choices shown from the list
-        Reply with-:
+        utils.message = `⚠️ *Invalid input response*, This is an automated system, we serve your request by pre-defined input-:
         *menu*: Main menu
         *start:* View shopping category`;
       }
-      await utils.sendTwilioWhatsappMessage();
+      if (data.constructor == Array) {
+        console.log("an array");
+      } else {
+        if (data.latitude) {
+          await utils.sendTwilioLocationInfo(data.longitude, data.latitude);
+        }
+        await utils.sendTwilioWhatsappMessage();
+      }
       await redis.setRedisStorageClient(data);
       utils.logger(
         `Message sent successfully to phoneNumber ${utils.getPhoneNumber()}`
       );
     } catch (error) {
+      console.log(error);
       utils.message =
-        "*Operation failed,* Reply with either\n*menu:* To main Menu\n*0:* To previous saved state";
+        "⚠️ *Operation failed,* Reply with either\n*menu:* To main Menu\n*0:* To previous saved state";
       utils.logger(
         `Message sent successfully to phoneNumber ${utils.getPhoneNumber()}`
       );

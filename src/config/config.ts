@@ -11,6 +11,14 @@ export default {
     AllItems: "/shopping/api/v1/get-all-items",
     addToCart: "/payment/api/v1/add_to_cart",
     proceedToCheckout: "/payment/api/v1/proceed-to-checkout",
+    checkCart: "/payout/api/v1/cart-checkout",
+    payment: "/payout/api/v1/confirm-checkout",
+    profileMain: "/profile/api/v1/get-profile",
+    profileRequestName: "/profile/api/v1/request-name",
+    profileName: "/profile/api/v1/read-write-name",
+    profileLiveLocation: "/profile/api/v1/",
+    requestNumber: "/payout/api/v1/phonenumber-request",
+    liveLocation:"/profile/api/v1/live-location"
   },
 
   urlsIds: {
@@ -21,11 +29,16 @@ export default {
     AllItemsId: "s5",
     addToCartId: "s6",
     proceedToCheckoutId: "s7",
+    checkCartId: "pd1",
+    paymentId: "pd2",
+    requestNumberId: "pd3",
+    profileMainId: "p1",
+    requestNameId: "p2",
+    profileNameId: "qa2",
+    liveLocationId:"qa3"
   },
   twilio: {
-    accountSid:
-      process.env.TWILIO_ACCOUNT_SID || "ACb4bfe96169bd3097e0ce5eb79ba2b7b8",
-    accountToken:
-      process.env.TWILIO_ACCOUNT_TOKEN || "50fd5e8974fb3979b7eccb5368692a0f",
+    accountSid: process.env.TWILIO_ACCOUNT_SID,
+    accountToken: process.env.TWILIO_ACCOUNT_TOKEN,
   },
 };

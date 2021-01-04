@@ -1,14 +1,13 @@
 import * as dotenv from "dotenv";
+dotenv.config();
 import express, { Application, NextFunction, Response, Request } from "express";
 import ioredis from "ioredis";
-import cors from "cors";
-import morgan from "morgan";
 import IORedis from "ioredis";
 import Common from "./extras/common";
 import { twilioRouter } from "./routes/index";
 
 // main app modules
-dotenv.config();
+
 const app: Application = express();
 
 // App configurations

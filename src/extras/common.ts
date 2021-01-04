@@ -17,6 +17,9 @@ export interface IDiscoveryResponse {
   errorMessage: string | null;
   nextStepId: string | null;
   previousUrlCall: string | null;
+  imageUrl?: string | null;
+  latitude?:number|null
+  longitude:number|null
 }
 
 // const init
@@ -63,4 +66,31 @@ export default class CommonUtils {
       throw error;
     }
   };
+
+  sendTwilioMediaMesssage =(mediaUrl:string)=>{
+  try {
+      const message = client.messages.create({
+        to: this.senderPhoneNumber,
+        from: this.convertToTwilioNumber(<string>process.env.TWILIO_NUMBER),
+        body: this.message,
+        mediaUrl:[mediaUrl]
+      });
+      return message;
+    } catch (error) {
+      throw error;
+    } 
+  }
+  sendTwilioLocationInfo =(longitude:number, latitude:number)=>{
+try {
+      const message = client.messages.create({
+        to: this.senderPhoneNumber,
+        from: this.convertToTwilioNumber(<string>process.env.TWILIO_NUMBER),
+        body: this.message,
+        persistentAction:`geo:${latitude},${longitude}`
+      });
+      return message;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
