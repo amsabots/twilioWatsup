@@ -18,11 +18,12 @@ export default class RedisClient {
   setRedisStorageClient = async (axiosMessage: IDiscoveryResponse) => {
     try {
       const { msisdn, nextStepId, previousUrlCall, sessionId } = axiosMessage;
-      const currentRecord = await await redisClient.hmset(msisdn, {
+      const currentRecord = await redisClient.hmset(msisdn, {
         sessionId: sessionId,
         nextUrlCallId: nextStepId,
         previousUrlCall: previousUrlCall,
       });
+      redisClient.expire(this.phoneNumberId, 1800);
       const log = await this.getRedisRecord();
       utils.logger(
         "new input data to redis at id:: " + axiosMessage.msisdn,

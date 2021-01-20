@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
 router.post("/api/twilio/", async (req, res) => {
   const { To, From, Body, NumMedia } = req.body;
   console.log(Body);
-  utils.senderPhoneNumber = From;
+  utils.sendTo = From;
   redis.phoneNumberId = utils.getPhoneNumber();
   const redisRecord = await redis.getRedisRecord();
   if (NumMedia == 0) {
@@ -30,7 +30,6 @@ router.post("/api/twilio/", async (req, res) => {
       baseUrl,
       startSession,
       sortByMethod,
-      sortParameters,
       AllItems,
       category,
       subCategory,
@@ -38,25 +37,32 @@ router.post("/api/twilio/", async (req, res) => {
       proceedToCheckout,
       payment,
       profileMain,
-      profileRequestName,
       profileName,
       requestNumber,
       liveLocation,
+      autoMessagePayment,
+      autoMessageRating,
+      profileEmail,
+      autoPaymentReconciliation,
+      profileSectionRedirector,
     } = config.urls;
     const {
       categoryId,
       subCategoryId,
       sortByMethodId,
-      sortParametersId,
       AllItemsId,
       addToCartId,
       proceedToCheckoutId,
       paymentId,
       profileMainId,
-      requestNameId,
       profileNameId,
       requestNumberId,
       liveLocationId,
+      autoMessagePaymentId,
+      autoMessageRatingId,
+      profileEmailId,
+      autoPaymentReconciliationId,
+      profileSectionRedirectorId,
     } = config.urlsIds;
     let params: Params = {
         action: Body.toLowerCase(),
@@ -74,7 +80,7 @@ router.post("/api/twilio/", async (req, res) => {
           params.action = 1;
           break;
         case "0":
-          const previousUrlCall: string = await redisRecord.previousUrlCall.split(
+          const previousUrlCall: string = redisRecord.previousUrlCall.split(
             "?"
           )[0];
           params.action = 0;
@@ -90,9 +96,6 @@ router.post("/api/twilio/", async (req, res) => {
               break;
             case sortByMethodId:
               requestUrl = requestUrl.concat(sortByMethod);
-              break;
-            case sortParametersId:
-              requestUrl = requestUrl.concat(sortParameters);
               break;
             case AllItemsId:
               requestUrl = requestUrl.concat(AllItems);
@@ -112,9 +115,6 @@ router.post("/api/twilio/", async (req, res) => {
             case profileMainId:
               requestUrl = requestUrl.concat(profileMain);
               break;
-            case requestNameId:
-              requestUrl = requestUrl.concat(profileRequestName);
-              break;
             case profileNameId:
               requestUrl = requestUrl.concat(profileName);
               break;
@@ -124,6 +124,21 @@ router.post("/api/twilio/", async (req, res) => {
             case liveLocationId:
               params.action = req.body;
               requestUrl = requestUrl.concat(liveLocation);
+              break;
+            case autoMessagePaymentId:
+              requestUrl = requestUrl.concat(autoMessagePayment);
+              break;
+            case autoMessageRatingId:
+              requestUrl = requestUrl.concat(autoMessageRating);
+              break;
+            case profileEmailId:
+              requestUrl = requestUrl.concat(profileEmail);
+              break;
+            case autoPaymentReconciliationId:
+              requestUrl = requestUrl.concat(autoPaymentReconciliation);
+              break;
+            case profileSectionRedirectorId:
+              requestUrl = requestUrl.concat(profileSectionRedirector);
               break;
           }
           break;
@@ -146,9 +161,6 @@ router.post("/api/twilio/", async (req, res) => {
       if (data.constructor == Array) {
         console.log("an array");
       } else {
-        if (data.latitude) {
-          await utils.sendTwilioLocationInfo(data.longitude, data.latitude);
-        }
         await utils.sendTwilioWhatsappMessage();
       }
       await redis.setRedisStorageClient(data);

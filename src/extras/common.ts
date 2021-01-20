@@ -10,16 +10,16 @@ export interface RedisStorage {
 }
 
 export interface IDiscoveryResponse {
-  sessionId: string | null;
-  message: string | null;
-  statusCode: number | null;
-  msisdn: string | null;
-  errorMessage: string | null;
-  nextStepId: string | null;
-  previousUrlCall: string | null;
+  sessionId?: string | null;
+  message?: string | null;
+  statusCode?: number | null;
+  msisdn?: string | null;
+  errorMessage?: string | null;
+  nextStepId?: string | null;
+  previousUrlCall?: string | null;
   imageUrl?: string | null;
-  latitude?:number|null
-  longitude:number|null
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 // const init
@@ -28,7 +28,8 @@ const client = twilio(accountSid, accountToken);
 
 export default class CommonUtils {
   message: string;
-  senderPhoneNumber: string;
+  sendTo: string;
+  receivedFrom: string;
 
   logger = (message: string | {}, file = "index", type = "info"): void => {
     console.log(
@@ -43,22 +44,24 @@ export default class CommonUtils {
     return today;
   };
 
-  private convertToTwilioNumber = (number: string): string => {
+  convertToTwilioNumber = (number: string): string => {
     let twilioNumber: string = "";
     twilioNumber = `whatsapp:+${number}`;
     return twilioNumber;
   };
 
   getPhoneNumber = (): string => {
-    const toBrokeToArray: string[] = this.senderPhoneNumber.split(":");
+    const toBrokeToArray: string[] = this.sendTo.split(":");
     return toBrokeToArray[1].replace("+", "");
   };
 
   sendTwilioWhatsappMessage = (): Promise<MessageInstance> => {
     try {
       const message = client.messages.create({
-        to: this.senderPhoneNumber,
-        from: this.convertToTwilioNumber(<string>process.env.TWILIO_NUMBER),
+        to: this.sendTo,
+        from:
+          this.receivedFrom ||
+          this.convertToTwilioNumber(<string>process.env.TWILIO_NUMBER),
         body: this.message,
       });
       return message;
@@ -67,30 +70,34 @@ export default class CommonUtils {
     }
   };
 
-  sendTwilioMediaMesssage =(mediaUrl:string)=>{
-  try {
+  sendTwilioMediaMesssage = (mediaUrl: string) => {
+    try {
       const message = client.messages.create({
-        to: this.senderPhoneNumber,
-        from: this.convertToTwilioNumber(<string>process.env.TWILIO_NUMBER),
+        to: this.sendTo,
+        from:
+          this.receivedFrom ||
+          this.convertToTwilioNumber(<string>process.env.TWILIO_NUMBER),
         body: this.message,
-        mediaUrl:[mediaUrl]
-      });
-      return message;
-    } catch (error) {
-      throw error;
-    } 
-  }
-  sendTwilioLocationInfo =(longitude:number, latitude:number)=>{
-try {
-      const message = client.messages.create({
-        to: this.senderPhoneNumber,
-        from: this.convertToTwilioNumber(<string>process.env.TWILIO_NUMBER),
-        body: this.message,
-        persistentAction:`geo:${latitude},${longitude}`
+        mediaUrl: [mediaUrl],
       });
       return message;
     } catch (error) {
       throw error;
     }
-  }
+  };
+  sendTwilioLocationInfo = (longitude: number, latitude: number) => {
+    try {
+      const message = client.messages.create({
+        to: this.sendTo,
+        from:
+          this.receivedFrom ||
+          this.convertToTwilioNumber(<string>process.env.TWILIO_NUMBER),
+        body: this.message,
+        persistentAction: `geo:${latitude},${longitude}`,
+      });
+      return message;
+    } catch (error) {
+      throw error;
+    }
+  };
 }

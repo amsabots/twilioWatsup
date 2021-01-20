@@ -5,6 +5,7 @@ import ioredis from "ioredis";
 import IORedis from "ioredis";
 import Common from "./extras/common";
 import { twilioRouter } from "./routes/index";
+import { AutoMessage } from "./routes/auto-messages";
 
 // main app modules
 
@@ -21,6 +22,7 @@ const { PORT, REDIS_CONNECTION } = process.env;
 
 // route management and configurations
 app.use("/webhook", twilioRouter);
+app.use("/auto-message", AutoMessage);
 app.use((req: Request, res: Response, next: NextFunction) => {
   utils.logger(req.originalUrl);
 });
@@ -35,5 +37,6 @@ const initAppConnection = (): void => {
     console.log(error);
   }
 };
+
 initAppConnection();
 export { redisClient };
