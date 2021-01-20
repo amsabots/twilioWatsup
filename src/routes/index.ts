@@ -153,6 +153,7 @@ router.post("/api/twilio/", async (req, res) => {
 
       if (data.statusCode === 200 || data.statusCode === 500) {
         utils.message = data.message;
+        console.log(data.message);
       } else {
         utils.message = `⚠️ *Invalid input response*, This is an automated system, we serve your request by pre-defined input-:
         *menu*: Main menu
