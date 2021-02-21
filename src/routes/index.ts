@@ -24,7 +24,11 @@ router.get("/", (req, res) => {
 
 router.post("/api/twilio/", async (req, res) => {
   const { To, From, Body, NumMedia } = req.body;
-  console.log(Body);
+  const message = await client.messages.create({
+        to:`whatsapp:+254710493090`,
+        from:`whatsapp:+14155238886`,
+        body: 'sending test message',
+      });
   utils.sendTo = From;
   redis.phoneNumberId = utils.getPhoneNumber();
   const redisRecord = await redis.getRedisRecord();

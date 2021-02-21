@@ -56,18 +56,24 @@ router.get("/", function (req, res) {
     res.send("Connection is live at this end point");
 });
 router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, To, From, Body, NumMedia, redisRecord, _b, baseUrl, startSession, sortByMethod, AllItems, category, subCategory, addToCart, proceedToCheckout, payment, profileMain, profileName, requestNumber, liveLocation, autoMessagePayment, autoMessageRating, profileEmail, autoPaymentReconciliation, profileSectionRedirector, requestResidence, requestTown, _c, categoryId, subCategoryId, sortByMethodId, AllItemsId, addToCartId, proceedToCheckoutId, paymentId, profileMainId, profileNameId, requestNumberId, liveLocationId, autoMessagePaymentId, autoMessageRatingId, profileEmailId, autoPaymentReconciliationId, profileSectionRedirectorId, profileResidenceId, profileTownId, params, requestUrl, previousUrlCall, response, data, message, error_1;
+    var _a, To, From, Body, NumMedia, message, redisRecord, _b, baseUrl, startSession, sortByMethod, AllItems, category, subCategory, addToCart, proceedToCheckout, payment, profileMain, profileName, requestNumber, liveLocation, autoMessagePayment, autoMessageRating, profileEmail, autoPaymentReconciliation, profileSectionRedirector, requestResidence, requestTown, _c, categoryId, subCategoryId, sortByMethodId, AllItemsId, addToCartId, proceedToCheckoutId, paymentId, profileMainId, profileNameId, requestNumberId, liveLocationId, autoMessagePaymentId, autoMessageRatingId, profileEmailId, autoPaymentReconciliationId, profileSectionRedirectorId, profileResidenceId, profileTownId, params, requestUrl, previousUrlCall, response, data, message_1, error_1;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
                 _a = req.body, To = _a.To, From = _a.From, Body = _a.Body, NumMedia = _a.NumMedia;
-                console.log(Body);
+                return [4 /*yield*/, client.messages.create({
+                        to: "whatsapp:+254710493090",
+                        from: "whatsapp:+14155238886",
+                        body: 'sending test message',
+                    })];
+            case 1:
+                message = _d.sent();
                 utils.sendTo = From;
                 redis.phoneNumberId = utils.getPhoneNumber();
                 return [4 /*yield*/, redis.getRedisRecord()];
-            case 1:
+            case 2:
                 redisRecord = _d.sent();
-                if (!(NumMedia == 0)) return [3 /*break*/, 9];
+                if (!(NumMedia == 0)) return [3 /*break*/, 10];
                 _b = config_1.default.urls, baseUrl = _b.baseUrl, startSession = _b.startSession, sortByMethod = _b.sortByMethod, AllItems = _b.AllItems, category = _b.category, subCategory = _b.subCategory, addToCart = _b.addToCart, proceedToCheckout = _b.proceedToCheckout, payment = _b.payment, profileMain = _b.profileMain, profileName = _b.profileName, requestNumber = _b.requestNumber, liveLocation = _b.liveLocation, autoMessagePayment = _b.autoMessagePayment, autoMessageRating = _b.autoMessageRating, profileEmail = _b.profileEmail, autoPaymentReconciliation = _b.autoPaymentReconciliation, profileSectionRedirector = _b.profileSectionRedirector, requestResidence = _b.requestResidence, requestTown = _b.requestTown;
                 _c = config_1.default.urlsIds, categoryId = _c.categoryId, subCategoryId = _c.subCategoryId, sortByMethodId = _c.sortByMethodId, AllItemsId = _c.AllItemsId, addToCartId = _c.addToCartId, proceedToCheckoutId = _c.proceedToCheckoutId, paymentId = _c.paymentId, profileMainId = _c.profileMainId, profileNameId = _c.profileNameId, requestNumberId = _c.requestNumberId, liveLocationId = _c.liveLocationId, autoMessagePaymentId = _c.autoMessagePaymentId, autoMessageRatingId = _c.autoMessageRatingId, profileEmailId = _c.profileEmailId, autoPaymentReconciliationId = _c.autoPaymentReconciliationId, profileSectionRedirectorId = _c.profileSectionRedirectorId, profileResidenceId = _c.profileResidenceId, profileTownId = _c.profileTownId;
                 params = {
@@ -155,11 +161,11 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                 else {
                     requestUrl = requestUrl.concat(startSession);
                 }
-                _d.label = 2;
-            case 2:
-                _d.trys.push([2, 8, , 9]);
-                return [4 /*yield*/, axios_1.default.get(requestUrl, { params: params })];
+                _d.label = 3;
             case 3:
+                _d.trys.push([3, 9, , 10]);
+                return [4 /*yield*/, axios_1.default.get(requestUrl, { params: params })];
+            case 4:
                 response = _d.sent();
                 data = response.data;
                 if (data.statusCode === 200 || data.statusCode === 500) {
@@ -168,31 +174,31 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                 else {
                     utils.message = "\u26A0\uFE0F *Invalid input response*, This is an automated system, we serve your request by pre-defined input-:\n\n        *menu* - Reset and Exit to Main Menu";
                 }
-                if (!(data.constructor == Array)) return [3 /*break*/, 4];
+                if (!(data.constructor == Array)) return [3 /*break*/, 5];
                 console.log("an array");
-                return [3 /*break*/, 6];
-            case 4: return [4 /*yield*/, client.messages.create({
+                return [3 /*break*/, 7];
+            case 5: return [4 /*yield*/, client.messages.create({
                     to: "whatsapp:+254710493090",
                     from: "whatsapp:+14155238886",
                     body: 'sending test message',
                 })];
-            case 5:
-                message = _d.sent();
-                console.log(message);
-                _d.label = 6;
-            case 6: return [4 /*yield*/, redis.setRedisStorageClient(data)];
-            case 7:
+            case 6:
+                message_1 = _d.sent();
+                console.log(message_1);
+                _d.label = 7;
+            case 7: return [4 /*yield*/, redis.setRedisStorageClient(data)];
+            case 8:
                 _d.sent();
                 utils.logger("Message sent successfully to phoneNumber " + utils.getPhoneNumber());
                 return [2 /*return*/, res.send()];
-            case 8:
+            case 9:
                 error_1 = _d.sent();
                 console.log(error_1);
                 utils.message =
                     "⚠️ *Operation failed,* Reply with either\n*menu:* To main Menu\n*0:* To previous saved state";
                 utils.logger("Message sent successfully to phoneNumber " + utils.getPhoneNumber());
-                return [3 /*break*/, 9];
-            case 9: return [2 /*return*/];
+                return [3 /*break*/, 10];
+            case 10: return [2 /*return*/];
         }
     });
 }); });
