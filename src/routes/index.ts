@@ -24,13 +24,7 @@ router.get("/", (req, res) => {
 
 router.post("/api/twilio/", async (req, res) => {
   const { To, From, Body, NumMedia } = req.body;
-  client.messages
-      .create({
-         from: 'whatsapp:+14155238886',
-         body: 'Hello there!',
-         to: 'whatsapp:+254710493090'
-       })
-      .then(message => console.log(message.sid))
+
   utils.sendTo = From;
   redis.phoneNumberId = utils.getPhoneNumber();
   const redisRecord = await redis.getRedisRecord();
@@ -180,14 +174,7 @@ router.post("/api/twilio/", async (req, res) => {
       if (data.constructor == Array) {
         console.log("an array");
       } else {
-        const message = await client.messages.create({
-        to:`whatsapp:+254710493090`,
-        from:`whatsapp:+14155238886`,
-        body: 'sending test message',
-      });
-      console.log(message)
-        //const send = await utils.sendTwilioWhatsappMessage();
-        
+         await utils.sendTwilioWhatsappMessage(); 
       }
       await redis.setRedisStorageClient(data);
       utils.logger(

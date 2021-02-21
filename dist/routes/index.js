@@ -56,18 +56,11 @@ router.get("/", function (req, res) {
     res.send("Connection is live at this end point");
 });
 router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, To, From, Body, NumMedia, redisRecord, _b, baseUrl, startSession, sortByMethod, AllItems, category, subCategory, addToCart, proceedToCheckout, payment, profileMain, profileName, requestNumber, liveLocation, autoMessagePayment, autoMessageRating, profileEmail, autoPaymentReconciliation, profileSectionRedirector, requestResidence, requestTown, _c, categoryId, subCategoryId, sortByMethodId, AllItemsId, addToCartId, proceedToCheckoutId, paymentId, profileMainId, profileNameId, requestNumberId, liveLocationId, autoMessagePaymentId, autoMessageRatingId, profileEmailId, autoPaymentReconciliationId, profileSectionRedirectorId, profileResidenceId, profileTownId, params, requestUrl, previousUrlCall, response, data, message, error_1;
+    var _a, To, From, Body, NumMedia, redisRecord, _b, baseUrl, startSession, sortByMethod, AllItems, category, subCategory, addToCart, proceedToCheckout, payment, profileMain, profileName, requestNumber, liveLocation, autoMessagePayment, autoMessageRating, profileEmail, autoPaymentReconciliation, profileSectionRedirector, requestResidence, requestTown, _c, categoryId, subCategoryId, sortByMethodId, AllItemsId, addToCartId, proceedToCheckoutId, paymentId, profileMainId, profileNameId, requestNumberId, liveLocationId, autoMessagePaymentId, autoMessageRatingId, profileEmailId, autoPaymentReconciliationId, profileSectionRedirectorId, profileResidenceId, profileTownId, params, requestUrl, previousUrlCall, response, data, error_1;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
                 _a = req.body, To = _a.To, From = _a.From, Body = _a.Body, NumMedia = _a.NumMedia;
-                client.messages
-                    .create({
-                    from: 'whatsapp:+14155238886',
-                    body: 'Hello there!',
-                    to: 'whatsapp:+254710493090'
-                })
-                    .then(function (message) { return console.log(message.sid); });
                 utils.sendTo = From;
                 redis.phoneNumberId = utils.getPhoneNumber();
                 return [4 /*yield*/, redis.getRedisRecord()];
@@ -177,14 +170,9 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                 if (!(data.constructor == Array)) return [3 /*break*/, 4];
                 console.log("an array");
                 return [3 /*break*/, 6];
-            case 4: return [4 /*yield*/, client.messages.create({
-                    to: "whatsapp:+254710493090",
-                    from: "whatsapp:+14155238886",
-                    body: 'sending test message',
-                })];
+            case 4: return [4 /*yield*/, utils.sendTwilioWhatsappMessage()];
             case 5:
-                message = _d.sent();
-                console.log(message);
+                _d.sent();
                 _d.label = 6;
             case 6: return [4 /*yield*/, redis.setRedisStorageClient(data)];
             case 7:
