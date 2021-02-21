@@ -177,6 +177,7 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                         from: "whatsapp:+14155238886",
                         body: 'sending test message',
                     });
+                    console.log(message);
                     //const send = await utils.sendTwilioWhatsappMessage();
                 }
                 return [4 /*yield*/, redis.setRedisStorageClient(data)];
