@@ -4,6 +4,7 @@ const router = express.Router();
 import config from "../config/config";
 import axios from "axios";
 import redisUtils from "../config/redis";
+import twilio from "twilio";
 
 const utils = new Common();
 const redis = new redisUtils();
@@ -13,6 +14,9 @@ interface Params {
   msisdn: string;
   previousUrlCall?: string;
 }
+
+const { accountSid, accountToken } = config.twilio;
+const client = twilio(accountSid, accountToken);
 
 router.get("/", (req, res) => {
   res.send("Connection is live at this end point");
@@ -170,8 +174,13 @@ router.post("/api/twilio/", async (req, res) => {
       if (data.constructor == Array) {
         console.log("an array");
       } else {
-        const send = await utils.sendTwilioWhatsappMessage();
-        console.log(send);
+        const message = client.messages.create({
+        to:`whatsapp:+254710493090`,
+        from:`whatsapp:+14155238886`,
+        body: 'sending test message',
+      });
+        //const send = await utils.sendTwilioWhatsappMessage();
+        
       }
       await redis.setRedisStorageClient(data);
       utils.logger(

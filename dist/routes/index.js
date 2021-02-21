@@ -47,13 +47,16 @@ exports.twilioRouter = router;
 var config_1 = __importDefault(require("../config/config"));
 var axios_1 = __importDefault(require("axios"));
 var redis_1 = __importDefault(require("../config/redis"));
+var twilio_1 = __importDefault(require("twilio"));
 var utils = new common_1.default();
 var redis = new redis_1.default();
+var _a = config_1.default.twilio, accountSid = _a.accountSid, accountToken = _a.accountToken;
+var client = twilio_1.default(accountSid, accountToken);
 router.get("/", function (req, res) {
     res.send("Connection is live at this end point");
 });
 router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, To, From, Body, NumMedia, redisRecord, _b, baseUrl, startSession, sortByMethod, AllItems, category, subCategory, addToCart, proceedToCheckout, payment, profileMain, profileName, requestNumber, liveLocation, autoMessagePayment, autoMessageRating, profileEmail, autoPaymentReconciliation, profileSectionRedirector, requestResidence, requestTown, _c, categoryId, subCategoryId, sortByMethodId, AllItemsId, addToCartId, proceedToCheckoutId, paymentId, profileMainId, profileNameId, requestNumberId, liveLocationId, autoMessagePaymentId, autoMessageRatingId, profileEmailId, autoPaymentReconciliationId, profileSectionRedirectorId, profileResidenceId, profileTownId, params, requestUrl, previousUrlCall, response, data, send, error_1;
+    var _a, To, From, Body, NumMedia, redisRecord, _b, baseUrl, startSession, sortByMethod, AllItems, category, subCategory, addToCart, proceedToCheckout, payment, profileMain, profileName, requestNumber, liveLocation, autoMessagePayment, autoMessageRating, profileEmail, autoPaymentReconciliation, profileSectionRedirector, requestResidence, requestTown, _c, categoryId, subCategoryId, sortByMethodId, AllItemsId, addToCartId, proceedToCheckoutId, paymentId, profileMainId, profileNameId, requestNumberId, liveLocationId, autoMessagePaymentId, autoMessageRatingId, profileEmailId, autoPaymentReconciliationId, profileSectionRedirectorId, profileResidenceId, profileTownId, params, requestUrl, previousUrlCall, response, data, message, error_1;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
@@ -64,7 +67,7 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                 return [4 /*yield*/, redis.getRedisRecord()];
             case 1:
                 redisRecord = _d.sent();
-                if (!(NumMedia == 0)) return [3 /*break*/, 9];
+                if (!(NumMedia == 0)) return [3 /*break*/, 6];
                 _b = config_1.default.urls, baseUrl = _b.baseUrl, startSession = _b.startSession, sortByMethod = _b.sortByMethod, AllItems = _b.AllItems, category = _b.category, subCategory = _b.subCategory, addToCart = _b.addToCart, proceedToCheckout = _b.proceedToCheckout, payment = _b.payment, profileMain = _b.profileMain, profileName = _b.profileName, requestNumber = _b.requestNumber, liveLocation = _b.liveLocation, autoMessagePayment = _b.autoMessagePayment, autoMessageRating = _b.autoMessageRating, profileEmail = _b.profileEmail, autoPaymentReconciliation = _b.autoPaymentReconciliation, profileSectionRedirector = _b.profileSectionRedirector, requestResidence = _b.requestResidence, requestTown = _b.requestTown;
                 _c = config_1.default.urlsIds, categoryId = _c.categoryId, subCategoryId = _c.subCategoryId, sortByMethodId = _c.sortByMethodId, AllItemsId = _c.AllItemsId, addToCartId = _c.addToCartId, proceedToCheckoutId = _c.proceedToCheckoutId, paymentId = _c.paymentId, profileMainId = _c.profileMainId, profileNameId = _c.profileNameId, requestNumberId = _c.requestNumberId, liveLocationId = _c.liveLocationId, autoMessagePaymentId = _c.autoMessagePaymentId, autoMessageRatingId = _c.autoMessageRatingId, profileEmailId = _c.profileEmailId, autoPaymentReconciliationId = _c.autoPaymentReconciliationId, profileSectionRedirectorId = _c.profileSectionRedirectorId, profileResidenceId = _c.profileResidenceId, profileTownId = _c.profileTownId;
                 params = {
@@ -154,7 +157,7 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                 }
                 _d.label = 2;
             case 2:
-                _d.trys.push([2, 8, , 9]);
+                _d.trys.push([2, 5, , 6]);
                 return [4 /*yield*/, axios_1.default.get(requestUrl, { params: params })];
             case 3:
                 response = _d.sent();
@@ -165,27 +168,30 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                 else {
                     utils.message = "\u26A0\uFE0F *Invalid input response*, This is an automated system, we serve your request by pre-defined input-:\n\n        *menu* - Reset and Exit to Main Menu";
                 }
-                if (!(data.constructor == Array)) return [3 /*break*/, 4];
-                console.log("an array");
-                return [3 /*break*/, 6];
-            case 4: return [4 /*yield*/, utils.sendTwilioWhatsappMessage()];
-            case 5:
-                send = _d.sent();
-                console.log(send);
-                _d.label = 6;
-            case 6: return [4 /*yield*/, redis.setRedisStorageClient(data)];
-            case 7:
+                if (data.constructor == Array) {
+                    console.log("an array");
+                }
+                else {
+                    message = client.messages.create({
+                        to: "whatsapp:+254710493090",
+                        from: "whatsapp:+14155238886",
+                        body: 'sending test message',
+                    });
+                    //const send = await utils.sendTwilioWhatsappMessage();
+                }
+                return [4 /*yield*/, redis.setRedisStorageClient(data)];
+            case 4:
                 _d.sent();
                 utils.logger("Message sent successfully to phoneNumber " + utils.getPhoneNumber());
                 return [2 /*return*/, res.send()];
-            case 8:
+            case 5:
                 error_1 = _d.sent();
                 console.log(error_1);
                 utils.message =
                     "⚠️ *Operation failed,* Reply with either\n*menu:* To main Menu\n*0:* To previous saved state";
                 utils.logger("Message sent successfully to phoneNumber " + utils.getPhoneNumber());
-                return [3 /*break*/, 9];
-            case 9: return [2 /*return*/];
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
 }); });

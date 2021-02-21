@@ -1,7 +1,6 @@
 import twilio from "twilio";
 import { MessageInstance } from "twilio/lib/rest/api/v2010/account/message";
 import config from "../config/config";
-import { twilioRouter } from "../routes";
 
 export interface RedisStorage {
   sessionId: string;
