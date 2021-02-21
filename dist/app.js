@@ -22,27 +22,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.redisClient = void 0;
 var dotenv = __importStar(require("dotenv"));
+dotenv.config();
 var express_1 = __importDefault(require("express"));
 var ioredis_1 = __importDefault(require("ioredis"));
-var cors_1 = __importDefault(require("cors"));
 var common_1 = __importDefault(require("./extras/common"));
+var index_1 = require("./routes/index");
+var auto_messages_1 = require("./routes/auto-messages");
+var status_1 = require("./routes/status");
 // main app modules
-dotenv.config();
 var app = express_1.default();
 // App configurations
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
-app.use(cors_1.default);
 //Application variable initialization and assignment
 var redisClient;
+exports.redisClient = redisClient;
 var utils = new common_1.default();
 var _a = process.env, PORT = _a.PORT, REDIS_CONNECTION = _a.REDIS_CONNECTION;
+// route management and configurations
+app.use("/webhook", index_1.twilioRouter);
+app.use("/auto-message", auto_messages_1.AutoMessage);
+app.use("/callback", status_1.StatusCallback);
+app.use(function (req, res, next) {
+    utils.logger(req.originalUrl);
+});
+app.use(function (req, res, next) {
+    if (!req.route)
+        throw new Error("The url request by the app does nor exist or is running behind some proxy server");
+    return next;
+});
 var initAppConnection = function () {
     try {
-        redisClient = new ioredis_1.default(REDIS_CONNECTION);
+        exports.redisClient = redisClient = new ioredis_1.default(REDIS_CONNECTION);
+        app.listen(PORT, function () { return utils.logger("App listening on port " + PORT); });
         redisClient.on("connect", function () {
-            utils.logger("Redis listening on port " + PORT, "app");
+            utils.logger("Redis listening on port " + REDIS_CONNECTION, "app");
         });
     }
     catch (error) {

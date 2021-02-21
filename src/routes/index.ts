@@ -45,6 +45,8 @@ router.post("/api/twilio/", async (req, res) => {
       profileEmail,
       autoPaymentReconciliation,
       profileSectionRedirector,
+      requestResidence,
+      requestTown,
     } = config.urls;
     const {
       categoryId,
@@ -63,6 +65,8 @@ router.post("/api/twilio/", async (req, res) => {
       profileEmailId,
       autoPaymentReconciliationId,
       profileSectionRedirectorId,
+      profileResidenceId,
+      profileTownId,
     } = config.urlsIds;
     let params: Params = {
         action: Body.toLowerCase(),
@@ -140,6 +144,12 @@ router.post("/api/twilio/", async (req, res) => {
             case profileSectionRedirectorId:
               requestUrl = requestUrl.concat(profileSectionRedirector);
               break;
+            case profileTownId:
+              requestUrl = requestUrl.concat(requestTown);
+              break;
+            case profileResidenceId:
+              requestUrl = requestUrl.concat(requestResidence);
+              break;
           }
           break;
       }
@@ -150,23 +160,24 @@ router.post("/api/twilio/", async (req, res) => {
     try {
       const response = await axios.get(requestUrl, { params });
       const data: IDiscoveryResponse = response.data;
-      console.log(data.message);
       if (data.statusCode === 200 || data.statusCode === 500) {
         utils.message = data.message;
       } else {
         utils.message = `⚠️ *Invalid input response*, This is an automated system, we serve your request by pre-defined input-:
-        *menu*: Main menu
-        *start:* View shopping category`;
+
+        *menu* - Reset and Exit to Main Menu`;
       }
       if (data.constructor == Array) {
         console.log("an array");
       } else {
-        await utils.sendTwilioWhatsappMessage();
+        const send = await utils.sendTwilioWhatsappMessage();
+        console.log(send);
       }
       await redis.setRedisStorageClient(data);
       utils.logger(
         `Message sent successfully to phoneNumber ${utils.getPhoneNumber()}`
       );
+      return res.send();
     } catch (error) {
       console.log(error);
       utils.message =
