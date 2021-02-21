@@ -179,6 +179,7 @@ router.post("/api/twilio/", async (req, res) => {
         from:`whatsapp:+14155238886`,
         body: 'sending test message',
       });
+      console.log(message)
         //const send = await utils.sendTwilioWhatsappMessage();
         
       }
