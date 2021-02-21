@@ -174,7 +174,7 @@ router.post("/api/twilio/", async (req, res) => {
       if (data.constructor == Array) {
         console.log("an array");
       } else {
-        const message = client.messages.create({
+        const message = await client.messages.create({
         to:`whatsapp:+254710493090`,
         from:`whatsapp:+14155238886`,
         body: 'sending test message',
