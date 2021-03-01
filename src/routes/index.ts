@@ -24,7 +24,7 @@ router.get("/", (req, res) => {
 
 router.post("/api/twilio/", async (req, res) => {
   const { To, From, Body, NumMedia } = req.body;
-
+  console.log(Body);
   utils.sendTo = From;
   redis.phoneNumberId = utils.getPhoneNumber();
   const redisRecord = await redis.getRedisRecord();
@@ -174,7 +174,7 @@ router.post("/api/twilio/", async (req, res) => {
       if (data.constructor == Array) {
         console.log("an array");
       } else {
-         await utils.sendTwilioWhatsappMessage(); 
+        await utils.sendTwilioWhatsappMessage();
       }
       await redis.setRedisStorageClient(data);
       utils.logger(

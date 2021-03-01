@@ -61,6 +61,7 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
         switch (_d.label) {
             case 0:
                 _a = req.body, To = _a.To, From = _a.From, Body = _a.Body, NumMedia = _a.NumMedia;
+                console.log(Body);
                 utils.sendTo = From;
                 redis.phoneNumberId = utils.getPhoneNumber();
                 return [4 /*yield*/, redis.getRedisRecord()];

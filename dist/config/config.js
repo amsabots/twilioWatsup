@@ -37,6 +37,7 @@ exports.default = {
         addToCartId: "s5",
         proceedToCheckoutId: "s6",
         checkCartId: "pd1",
+        // ======================================
         paymentId: "pd2",
         requestNumberId: "pd3",
         // =================================
