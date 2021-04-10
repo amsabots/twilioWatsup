@@ -162,7 +162,6 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
             case 3:
                 response = _d.sent();
                 data = response.data;
-                console.log(data);
                 if (data.statusCode === 200 || data.statusCode === 500) {
                     utils.message = data.message;
                 }

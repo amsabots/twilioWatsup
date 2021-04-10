@@ -44,8 +44,11 @@ exports.twilioRouter = router;
 var config_1 = require("../config/config");
 var axios_1 = require("axios");
 var redis_1 = require("../config/redis");
+var twilio_1 = require("twilio");
 var utils = new common_1["default"]();
 var redis = new redis_1["default"]();
+var _a = config_1["default"].twilio, accountSid = _a.accountSid, accountToken = _a.accountToken;
+var client = twilio_1["default"](accountSid, accountToken);
 router.get("/", function (req, res) {
     res.send("Connection is live at this end point");
 });
@@ -173,7 +176,7 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
             case 7:
                 _d.sent();
                 utils.logger("Message sent successfully to phoneNumber " + utils.getPhoneNumber());
-                return [3 /*break*/, 9];
+                return [2 /*return*/, res.send()];
             case 8:
                 error_1 = _d.sent();
                 console.log(error_1);
