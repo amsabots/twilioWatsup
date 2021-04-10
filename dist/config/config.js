@@ -4,7 +4,7 @@ exports.default = {
     urls: {
         startSession: "/index/api/v1/startsession",
         category: "/index/api/v1/category",
-        baseUrl: "http://18.223.68.165:7005",
+        baseUrl: "http://3.17.143.218:7005",
         // ====================================================
         subCategory: "/shopping/api/v1/subcategory",
         sortByMethod: "/shopping/api/v1/sort_by_method",
