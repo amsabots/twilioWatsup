@@ -1,13 +1,10 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var twilio_1 = __importDefault(require("twilio"));
-var config_1 = __importDefault(require("../config/config"));
+exports.__esModule = true;
+var twilio_1 = require("twilio");
+var config_1 = require("../config/config");
 // const init
-var _a = config_1.default.twilio, accountSid = _a.accountSid, accountToken = _a.accountToken;
-var client = twilio_1.default(accountSid, accountToken);
+var _a = config_1["default"].twilio, accountSid = _a.accountSid, accountToken = _a.accountToken;
+var client = twilio_1["default"](accountSid, accountToken);
 var CommonUtils = /** @class */ (function () {
     function CommonUtils() {
         var _this = this;
@@ -37,7 +34,7 @@ var CommonUtils = /** @class */ (function () {
                     to: _this.sendTo,
                     from: _this.receivedFrom ||
                         _this.convertToTwilioNumber(process.env.TWILIO_NUMBER),
-                    body: _this.message,
+                    body: _this.message
                 });
                 return message;
             }
@@ -54,7 +51,7 @@ var CommonUtils = /** @class */ (function () {
                     body: _this.message,
                     mediaUrl: [
                         "https://cdn.pixabay.com/photo/2021/02/05/20/03/matchstick-5985710_960_720.jpg",
-                    ],
+                    ]
                 });
                 return message;
             }
@@ -69,7 +66,7 @@ var CommonUtils = /** @class */ (function () {
                     from: _this.receivedFrom ||
                         _this.convertToTwilioNumber(process.env.TWILIO_NUMBER),
                     body: _this.message,
-                    persistentAction: "geo:" + latitude + "," + longitude,
+                    persistentAction: "geo:" + latitude + "," + longitude
                 });
                 return message;
             }
@@ -80,4 +77,4 @@ var CommonUtils = /** @class */ (function () {
     }
     return CommonUtils;
 }());
-exports.default = CommonUtils;
+exports["default"] = CommonUtils;

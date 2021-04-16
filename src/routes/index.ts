@@ -172,21 +172,18 @@ router.post("/api/twilio/", async (req, res) => {
 
         *menu* - Reset and Exit to Main Menu`;
       }
-      if (data.constructor == Array) {
-        console.log("an array");
+      if (!data.imageUrl) {
+        utils.logger(
+          `Non media message sent to destination ${utils.getPhoneNumber()}`
+        );
+        await utils.sendTwilioWhatsappMessage();
       } else {
-        if (!data.imageUrl) {
-          utils.logger(
-            `Non media message sent to destination ${utils.getPhoneNumber()}`
-          );
-          await utils.sendTwilioWhatsappMessage();
-        } else {
-          utils.logger(
-            `Media message sent to destination ${utils.getPhoneNumber()}`
-          );
-        }
+        utils.logger(
+          `Media message sent to destination ${utils.getPhoneNumber()}`
+        );
         await utils.sendTwilioMediaMesssage(data.imageUrl);
       }
+
       await redis.setRedisStorageClient(data);
 
       return res.send();
