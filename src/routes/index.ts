@@ -164,6 +164,7 @@ router.post("/api/twilio/", async (req, res) => {
     try {
       const response = await axios.get(requestUrl, { params });
       const data: IDiscoveryResponse = response.data;
+      console.log(data);
 
       if (data.statusCode === 200 || data.statusCode === 500) {
         utils.message = data.message;
