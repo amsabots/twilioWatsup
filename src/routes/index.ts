@@ -179,12 +179,12 @@ router.post("/api/twilio/", async (req, res) => {
           utils.logger(
             `Non media message sent to destination ${utils.getPhoneNumber()}`
           );
-          return await utils.sendTwilioWhatsappMessage();
+          await utils.sendTwilioWhatsappMessage();
         }
         utils.logger(
           `Media message sent to destination ${utils.getPhoneNumber()}`
         );
-        return await utils.sendTwilioMediaMesssage(data.imageUrl);
+        await utils.sendTwilioMediaMesssage(data.imageUrl);
       }
       await redis.setRedisStorageClient(data);
 

@@ -172,11 +172,15 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                 if (!!data.imageUrl) return [3 /*break*/, 6];
                 utils.logger("Non media message sent to destination " + utils.getPhoneNumber());
                 return [4 /*yield*/, utils.sendTwilioWhatsappMessage()];
-            case 5: return [2 /*return*/, _d.sent()];
+            case 5:
+                _d.sent();
+                _d.label = 6;
             case 6:
                 utils.logger("Media message sent to destination " + utils.getPhoneNumber());
                 return [4 /*yield*/, utils.sendTwilioMediaMesssage(data.imageUrl)];
-            case 7: return [2 /*return*/, _d.sent()];
+            case 7:
+                _d.sent();
+                _d.label = 8;
             case 8: return [4 /*yield*/, redis.setRedisStorageClient(data)];
             case 9:
                 _d.sent();
