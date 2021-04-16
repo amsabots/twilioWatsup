@@ -77,9 +77,7 @@ export default class CommonUtils {
           this.receivedFrom ||
           this.convertToTwilioNumber(<string>process.env.TWILIO_NUMBER),
         body: this.message,
-        mediaUrl: [
-          "https://cdn.pixabay.com/photo/2021/02/05/20/03/matchstick-5985710_960_720.jpg",
-        ],
+        mediaUrl: [mediaUrl],
       });
       return message;
     } catch (error) {

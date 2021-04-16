@@ -52,9 +52,7 @@ var CommonUtils = /** @class */ (function () {
                     from: _this.receivedFrom ||
                         _this.convertToTwilioNumber(process.env.TWILIO_NUMBER),
                     body: _this.message,
-                    mediaUrl: [
-                        "https://cdn.pixabay.com/photo/2021/02/05/20/03/matchstick-5985710_960_720.jpg",
-                    ],
+                    mediaUrl: [mediaUrl],
                 });
                 return message;
             }
