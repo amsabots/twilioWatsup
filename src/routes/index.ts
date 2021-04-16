@@ -164,7 +164,6 @@ router.post("/api/twilio/", async (req, res) => {
     try {
       const response = await axios.get(requestUrl, { params });
       const data: IDiscoveryResponse = response.data;
-      console.log(data);
 
       if (data.statusCode === 200 || data.statusCode === 500) {
         utils.message = data.message;
@@ -176,12 +175,19 @@ router.post("/api/twilio/", async (req, res) => {
       if (data.constructor == Array) {
         console.log("an array");
       } else {
-        await utils.sendTwilioWhatsappMessage();
+        if (!data.imageUrl) {
+          utils.logger(
+            `Non media message sent to destination ${utils.getPhoneNumber()}`
+          );
+          return await utils.sendTwilioWhatsappMessage();
+        }
+        utils.logger(
+          `Media message sent to destination ${utils.getPhoneNumber()}`
+        );
+        return await utils.sendTwilioMediaMesssage(data.imageUrl);
       }
       await redis.setRedisStorageClient(data);
-      utils.logger(
-        `Message sent successfully to phoneNumber ${utils.getPhoneNumber()}`
-      );
+
       return res.send();
     } catch (error) {
       console.log(error);
