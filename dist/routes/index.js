@@ -67,7 +67,7 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                 return [4 /*yield*/, redis.getRedisRecord()];
             case 1:
                 redisRecord = _d.sent();
-                if (!(NumMedia == 0)) return [3 /*break*/, 11];
+                if (!(NumMedia == 0)) return [3 /*break*/, 12];
                 _b = config_1.default.urls, baseUrl = _b.baseUrl, startSession = _b.startSession, sortByMethod = _b.sortByMethod, AllItems = _b.AllItems, category = _b.category, subCategory = _b.subCategory, addToCart = _b.addToCart, proceedToCheckout = _b.proceedToCheckout, payment = _b.payment, profileMain = _b.profileMain, profileName = _b.profileName, requestNumber = _b.requestNumber, liveLocation = _b.liveLocation, autoMessagePayment = _b.autoMessagePayment, autoMessageRating = _b.autoMessageRating, profileEmail = _b.profileEmail, autoPaymentReconciliation = _b.autoPaymentReconciliation, profileSectionRedirector = _b.profileSectionRedirector, requestResidence = _b.requestResidence, requestTown = _b.requestTown;
                 _c = config_1.default.urlsIds, categoryId = _c.categoryId, subCategoryId = _c.subCategoryId, sortByMethodId = _c.sortByMethodId, AllItemsId = _c.AllItemsId, addToCartId = _c.addToCartId, proceedToCheckoutId = _c.proceedToCheckoutId, paymentId = _c.paymentId, profileMainId = _c.profileMainId, profileNameId = _c.profileNameId, requestNumberId = _c.requestNumberId, liveLocationId = _c.liveLocationId, autoMessagePaymentId = _c.autoMessagePaymentId, autoMessageRatingId = _c.autoMessageRatingId, profileEmailId = _c.profileEmailId, autoPaymentReconciliationId = _c.autoPaymentReconciliationId, profileSectionRedirectorId = _c.profileSectionRedirectorId, profileResidenceId = _c.profileResidenceId, profileTownId = _c.profileTownId;
                 params = {
@@ -157,7 +157,7 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                 }
                 _d.label = 2;
             case 2:
-                _d.trys.push([2, 10, , 11]);
+                _d.trys.push([2, 11, , 12]);
                 return [4 /*yield*/, axios_1.default.get(requestUrl, { params: params })];
             case 3:
                 response = _d.sent();
@@ -170,32 +170,33 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
                 }
                 if (!(data.constructor == Array)) return [3 /*break*/, 4];
                 console.log("an array");
-                return [3 /*break*/, 8];
+                return [3 /*break*/, 9];
             case 4:
                 if (!!data.imageUrl) return [3 /*break*/, 6];
                 utils.logger("Non media message sent to destination " + utils.getPhoneNumber());
                 return [4 /*yield*/, utils.sendTwilioWhatsappMessage()];
             case 5:
                 _d.sent();
-                _d.label = 6;
+                return [3 /*break*/, 7];
             case 6:
                 utils.logger("Media message sent to destination " + utils.getPhoneNumber());
-                return [4 /*yield*/, utils.sendTwilioMediaMesssage(data.imageUrl)];
-            case 7:
+                _d.label = 7;
+            case 7: return [4 /*yield*/, utils.sendTwilioMediaMesssage(data.imageUrl)];
+            case 8:
                 _d.sent();
-                _d.label = 8;
-            case 8: return [4 /*yield*/, redis.setRedisStorageClient(data)];
-            case 9:
+                _d.label = 9;
+            case 9: return [4 /*yield*/, redis.setRedisStorageClient(data)];
+            case 10:
                 _d.sent();
                 return [2 /*return*/, res.send()];
-            case 10:
+            case 11:
                 error_1 = _d.sent();
                 console.log(error_1);
                 utils.message =
                     "⚠️ *Operation failed,* Reply with either\n*menu:* To main Menu\n*0:* To previous saved state";
                 utils.logger("Message sent successfully to phoneNumber " + utils.getPhoneNumber());
-                return [3 /*break*/, 11];
-            case 11: return [2 /*return*/];
+                return [3 /*break*/, 12];
+            case 12: return [2 /*return*/];
         }
     });
 }); });
