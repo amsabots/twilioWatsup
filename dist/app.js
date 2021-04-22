@@ -45,12 +45,12 @@ var _a = process.env, PORT = _a.PORT, REDIS_CONNECTION = _a.REDIS_CONNECTION;
 app.use("/webhook", index_1.twilioRouter);
 app.use("/auto-message", auto_messages_1.AutoMessage);
 app.use("/callback", status_1.StatusCallback);
-app.use(function (req, res, next) {
-    utils.logger(req.originalUrl);
-});
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//   utils.logger(req.originalUrl);
+// });
 app.use(function (req, res, next) {
     if (!req.route)
-        throw new Error("The url request by the app does nor exist or is running behind some proxy server");
+        throw new Error("The url requested by the app does not exist or is running behind some proxy/reverse server");
     return next;
 });
 var initAppConnection = function () {

@@ -25,14 +25,15 @@ const { PORT, REDIS_CONNECTION } = process.env;
 app.use("/webhook", twilioRouter);
 app.use("/auto-message", AutoMessage);
 app.use("/callback", StatusCallback);
-app.use((req: Request, res: Response, next: NextFunction) => {
-  utils.logger(req.originalUrl);
-});
+
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//   utils.logger(req.originalUrl);
+// });
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   if (!req.route)
     throw new Error(
-      "The url request by the app does nor exist or is running behind some proxy server"
+      "The url requested by the app does not exist or is running behind some proxy/reverse server"
     );
   return next;
 });

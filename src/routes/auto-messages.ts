@@ -9,6 +9,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const payload: IDiscoveryResponse = JSON.parse(<string>req.query.payload);
+
     redis.phoneNumberId = payload.msisdn;
     const redisStorage = await redis.getRedisRecord();
     await redis.setRedisStorageClient(payload);
@@ -16,6 +17,7 @@ router.get("/", async (req, res) => {
     commonUtils.sendTo = commonUtils.convertToTwilioNumber(payload.msisdn);
     commonUtils.message = payload.message;
     await commonUtils.sendTwilioWhatsappMessage();
+    res.send("done");
   } catch (error) {
     console.log(error);
   }

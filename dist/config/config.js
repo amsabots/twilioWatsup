@@ -28,6 +28,7 @@ exports.default = {
         autoMessagePayment: "/auto-message/api/v1/payment-state",
         autoMessageRating: "/auto-message/api/v1/rating",
         autoPaymentReconciliation: "/auto-message/api/v1/payment-reconciliation",
+        // =====================================================================
     },
     urlsIds: {
         categoryId: "s1",
@@ -52,6 +53,7 @@ exports.default = {
         autoMessagePaymentId: "amp2",
         autoMessageRatingId: "amr2",
         autoPaymentReconciliationId: "amp3",
+        // ==================================
     },
     twilio: {
         accountSid: process.env.TWILIO_ACCOUNT_SID,
