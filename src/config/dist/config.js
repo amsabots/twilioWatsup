@@ -1,6 +1,6 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = {
+exports.__esModule = true;
+exports["default"] = {
     urls: {
         startSession: "/index/api/v1/startsession",
         category: "/index/api/v1/category",
@@ -27,8 +27,7 @@ exports.default = {
         // ==========================================================
         autoMessagePayment: "/auto-message/api/v1/payment-state",
         autoMessageRating: "/auto-message/api/v1/rating",
-        autoPaymentReconciliation: "/auto-message/api/v1/payment-reconciliation",
-        // =====================================================================
+        autoPaymentReconciliation: "/auto-message/api/v1/payment-reconciliation"
     },
     urlsIds: {
         categoryId: "s1",
@@ -52,11 +51,10 @@ exports.default = {
         // ==================================
         autoMessagePaymentId: "amp2",
         autoMessageRatingId: "amr2",
-        autoPaymentReconciliationId: "amp3",
-        // ==================================
+        autoPaymentReconciliationId: "amp3"
     },
     twilio: {
         accountSid: process.env.TWILIO_ACCOUNT_SID,
-        accountToken: process.env.TWILIO_ACCOUNT_TOKEN,
-    },
+        accountToken: process.env.TWILIO_ACCOUNT_TOKEN
+    }
 };
