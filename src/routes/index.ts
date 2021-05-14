@@ -23,6 +23,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/api/twilio/", async (req, res) => {
+  console.log(req.body);
   const { To, From, Body, NumMedia } = req.body;
   console.log(Body);
   utils.sendTo = From;
@@ -88,9 +89,8 @@ router.post("/api/twilio/", async (req, res) => {
           params.action = 1;
           break;
         case "0":
-          const previousUrlCall: string = redisRecord.previousUrlCall.split(
-            "?"
-          )[0];
+          const previousUrlCall: string =
+            redisRecord.previousUrlCall.split("?")[0];
           params.action = 0;
           requestUrl = requestUrl.concat(previousUrlCall);
           break;

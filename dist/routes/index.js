@@ -60,6 +60,7 @@ router.post("/api/twilio/", function (req, res) { return __awaiter(void 0, void 
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
+                console.log(req.body);
                 _a = req.body, To = _a.To, From = _a.From, Body = _a.Body, NumMedia = _a.NumMedia;
                 console.log(Body);
                 utils.sendTo = From;
